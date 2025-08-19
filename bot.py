@@ -3,7 +3,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # Bot ka Token
-TOKEN = "👉 yahan apna bot token paste karo 👈"
+TOKEN = "8234777694:AAG3RhP147Y5tpaY1TXzC_270D3B3wH2_Bw👈"
 
 # Admin ID (aapki Telegram ID)
 ADMIN_ID = 5046658718
