@@ -12,6 +12,7 @@ ADMIN_ID = 5046658718
 user_bonus = {}
 user_balances = {}       # user_id -> balance
 withdraw_requests = {}   # request_id -> {user_id, method, number, amount}
+shown_message = {}       # track which users have seen welcome message
 
 # === Menu Keyboard ===
 def main_menu():
@@ -26,9 +27,23 @@ def main_menu():
 # === Start Command ===
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.from_user.id
+
     if user_id not in user_balances:
         user_balances[user_id] = 0.0  # new user ka balance
 
+    # One-time Welcome Message
+    if not shown_message.get(user_id):
+        await update.message.reply_text(
+            "🎉 Welcome to *Exazz Bot* 🎉\n\n"
+            "👉 Here you can invest and earn rewards daily.\n"
+            "💰 Claim bonuses, invite friends, and withdraw easily!\n\n"
+            "⚠️ Note: Minimum withdrawal is 10 USDT.\n\n"
+            "🚀 Let's get started!",
+            parse_mode="Markdown"
+        )
+        shown_message[user_id] = True  # mark as shown
+
+    # Normal Menu
     await update.message.reply_text(
         "👋 Welcome to Exazz Bot!\n\nChoose an option below:",
         reply_markup=main_menu()
@@ -65,7 +80,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "📥 Deposit":
         await update.message.reply_text(
             "💳 Send USDT (TRC20) to this address:\n`TLmkHP3LdQj8xbBPwqyWGpeyxVrT3Ew9PW`\n\n"
-            "⚠️ After sending, contact admin with TXID for approval."
+            "⚠️ After sending, contact admin with TXID for approval.",
+            parse_mode="Markdown"
         )
 
     elif text == "🎁 Daily Bonus":
